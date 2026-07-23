@@ -122,10 +122,13 @@ export function CourseSidebar() {
       }}
     >
       <div style={{ padding: "16px 16px 8px" }}>
-        <div style={{ cursor: "pointer", marginBottom: 12 }} onClick={() => navigate("/learn")}>
+        <div style={{ cursor: "pointer", marginBottom: 12 }} onClick={() => navigate("/")}>
           <Text strong style={{ color: "#1f2937", fontSize: 15 }}>
             📚 量化交易课程
           </Text>
+          <div>
+            <Text style={{ fontSize: 11, color: "#9ca3af" }}>返回课程介绍</Text>
+          </div>
         </div>
         <Progress
           percent={pct}
