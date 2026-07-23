@@ -2,6 +2,12 @@
 
 > 一套中文量化交易课程——从期货基础到生产级策略，14 模块 / 68 课节 / 135 术语 / 52 组测验 / 11 个互动组件。
 
+[![CI](https://github.com/<your-org>/quantnexus-course/actions/workflows/ci.yml/badge.svg)](https://github.com/<your-org>/quantnexus-course/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+📖 想贡献？请先读 [CONTRIBUTING.md](CONTRIBUTING.md)。
+发现问题？提 [Issue](https://github.com/<your-org>/quantnexus-course/issues)。
+
 ## 这是什么
 
 这是 [QuantNexus](https://github.com/your-org/quant-nexus) 平台中独立出来的量化交易教学子项目。课程面向**有编程背景、金融零基础**的学习者，目标是帮助一个人从小白成长为能独立研发、风控、运维量化策略的准专家。
@@ -59,20 +65,11 @@ src/pages/learn/
 
 ## 如何贡献
 
-### 修改一课内容
+详见 [CONTRIBUTING.md](CONTRIBUTING.md)。要点：
 
-直接编辑 `src/pages/learn/data/content/<课节>.md`：
-
-- **frontmatter**（`---` 之间）存元数据：`id` / `title` / `duration` / `module` / `quiz` / `interactive`
-- **正文** 用 Markdown 写，支持：
-  - 普通段落、表格、引用块、`$$ 数学公式 $$`、行内代码
-  - `:::highlight blue|orange|green` … `:::` 提示框
-  - 标准 fenced code block（` ```python `）
-  - `<!-- quiz:N -->` / `<!-- interactive:N -->` 占位（对应 frontmatter 的 quiz/interactive 声明）
-
-### 新增 quiz / 术语
-
-测验与术语表是结构化数据，在 `src/pages/learn/data/courseContent.ts` 的 `QUIZZES` / `GLOSSARY` 中维护（按 key 查询，便于类型检查）。
+- **改正文**：直接编辑 `src/pages/learn/data/content/<课节>.md`（frontmatter + Markdown 正文，支持 `:::highlight`、`$$公式$$`、`<!-- quiz:N -->` 占位）
+- **改 quiz / 术语**：在 `courseContent.ts` 的 `QUIZZES` / `GLOSSARY` 中维护
+- **提 PR 前**：`npm run test` 全绿 + `npm run lint` 0 错误 + `npm run dev` 浏览器抽查
 
 ### 从主项目同步内容（仅维护者）
 
