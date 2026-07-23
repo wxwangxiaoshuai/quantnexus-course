@@ -166,17 +166,9 @@ const LEARN_MD_COMPONENTS: Components = {
   ),
   hr: () => <hr style={{ border: "none", borderTop: "1px solid #e5e7eb", margin: "16px 0" }} />,
   table: ({ children }) => (
-    <table
-      style={{
-        width: "100%",
-        margin: "12px 0",
-        borderCollapse: "collapse",
-        fontSize: 14,
-        color: "#374151",
-      }}
-    >
-      {children}
-    </table>
+    <div className="learn-markdown-table-wrap">
+      <table>{children}</table>
+    </div>
   ),
   thead: ({ children }) => (
     <thead style={{ background: "#f6f8fa" }}>{children}</thead>

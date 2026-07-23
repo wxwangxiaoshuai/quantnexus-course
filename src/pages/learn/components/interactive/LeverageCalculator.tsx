@@ -74,7 +74,7 @@ export function LeverageCalculator() {
           <Space direction="vertical" style={{ width: "100%" }} size="middle">
             <div style={{ background: "#f6f8fb", borderRadius: 8, padding: 16 }}>
               <Row gutter={8}>
-                <Col span={12}>
+                <Col xs={24} sm={12}>
                   <Text style={{ color: "#6b7280", fontSize: 12 }}>控仓价值</Text>
                   <div>
                     <Text strong style={{ color: "#1f2937" }}>
@@ -82,7 +82,7 @@ export function LeverageCalculator() {
                     </Text>
                   </div>
                 </Col>
-                <Col span={12}>
+                <Col xs={24} sm={12}>
                   <Text style={{ color: "#6b7280", fontSize: 12 }}>保证金比例</Text>
                   <div>
                     <Text strong style={{ color: "#1f2937" }}>

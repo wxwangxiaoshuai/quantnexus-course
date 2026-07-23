@@ -21,7 +21,7 @@ export function HomePanel() {
   ).find(({ lessonId }) => !isComplete(lessonId));
 
   return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: "32px 24px" }}>
+    <div className="learn-page-content">
       <Title level={2} style={{ color: "#1f2937" }}>
         期货量化交易系统课程
       </Title>
@@ -29,8 +29,8 @@ export function HomePanel() {
         面向有编程经验的金融零基础学习者。用程序员的视角，深入浅出地掌握期货量化交易的核心知识。包含 12 个模块、3 个生产级实战项目，从策略发现到实盘上线全流程。
       </Paragraph>
 
-      <Row gutter={16} style={{ marginBottom: 32 }}>
-        <Col span={8}>
+      <Row gutter={[16, 16]} style={{ marginBottom: 32 }}>
+        <Col xs={24} sm={8}>
           <Card style={{ background: "#ffffff", border: "1px solid #e5e7eb" }}>
             <Statistic
               title={<Text style={{ color: "#6b7280" }}>主线课程进度</Text>}
@@ -41,7 +41,7 @@ export function HomePanel() {
             />
           </Card>
         </Col>
-        <Col span={8}>
+        <Col xs={24} sm={8}>
           <Card style={{ background: "#ffffff", border: "1px solid #e5e7eb" }}>
             <Statistic
               title={<Text style={{ color: "#6b7280" }}>主线预计时长</Text>}
@@ -52,7 +52,7 @@ export function HomePanel() {
             />
           </Card>
         </Col>
-        <Col span={8}>
+        <Col xs={24} sm={8}>
           <Card style={{ background: "#ffffff", border: "1px solid #e5e7eb" }}>
             <Statistic
               title={<Text style={{ color: "#6b7280" }}>互动组件</Text>}
@@ -85,7 +85,7 @@ export function HomePanel() {
         {COURSE_MODULES.map((mod) => {
           const modCompleted = mod.lessons.filter((l) => isComplete(l.id)).length;
           return (
-            <Col span={12} key={mod.id}>
+            <Col xs={24} md={12} key={mod.id}>
               <Card
                 hoverable
                 style={{
@@ -93,7 +93,10 @@ export function HomePanel() {
                   border: (mod.id === "m12" || mod.id === "m13" || mod.id === "m14") ? "2px solid #f0883e" : "1px solid #e5e7eb",
                   cursor: "pointer",
                 }}
-                onClick={() => navigate(`/learn/${mod.id}/${mod.lessons[0].id}`)}
+                onClick={() => {
+                  const firstLesson = mod.lessons[0];
+                  if (firstLesson) navigate(`/learn/${mod.id}/${firstLesson.id}`);
+                }}
               >
                 <Space direction="vertical" style={{ width: "100%" }}>
                   <Space>

@@ -1,5 +1,5 @@
 import { BookOutlined, CheckCircleFilled } from "@ant-design/icons";
-import { Button, Menu, Progress, Tag, Tooltip, Typography } from "antd";
+import { Button, Drawer, Menu, Progress, Tag, Tooltip, Typography } from "antd";
 import type { MenuProps } from "antd";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -16,11 +16,14 @@ function useCurrentLessonParams() {
   return { moduleId: match?.[1], lessonId: match?.[2] };
 }
 
-export function CourseSidebar() {
+interface CourseSidebarPanelProps {
+  onNavigate?: () => void;
+}
+
+function CourseSidebarPanel({ onNavigate }: CourseSidebarPanelProps) {
   const { moduleId, lessonId } = useCurrentLessonParams();
   const navigate = useNavigate();
   const { isComplete, progress } = useLearnProgress();
-  // All modules start collapsed; opening the current lesson's module auto-expands only that one.
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
   useEffect(() => {
@@ -107,22 +110,15 @@ export function CourseSidebar() {
 
   const selectedKey = moduleId && lessonId ? `${moduleId}/${lessonId}` : undefined;
 
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    onNavigate?.();
+  };
+
   return (
-    <div
-      style={{
-        width: 280,
-        minWidth: 280,
-        height: "100vh",
-        flexShrink: 0,
-        background: "#ffffff",
-        borderRight: "1px solid #e5e7eb",
-        display: "flex",
-        flexDirection: "column",
-        overflow: "hidden",
-      }}
-    >
+    <>
       <div style={{ padding: "16px 16px 8px" }}>
-        <div style={{ cursor: "pointer", marginBottom: 12 }} onClick={() => navigate("/")}>
+        <div style={{ cursor: "pointer", marginBottom: 12 }} onClick={() => handleNavigate("/")}>
           <Text strong style={{ color: "#1f2937", fontSize: 15 }}>
             📚 量化交易课程
           </Text>
@@ -146,7 +142,7 @@ export function CourseSidebar() {
           icon={<BookOutlined />}
           block
           style={{ color: "#374151", textAlign: "left", marginTop: 8 }}
-          onClick={() => navigate("/learn/glossary")}
+          onClick={() => handleNavigate("/learn/glossary")}
         >
           术语速查表
         </Button>
@@ -159,9 +155,36 @@ export function CourseSidebar() {
           onOpenChange={(keys) => setOpenKeys(keys as string[])}
           items={items}
           style={{ background: "transparent", border: "none" }}
-          onClick={({ key }) => navigate(`/learn/${key}`)}
+          onClick={({ key }) => handleNavigate(`/learn/${key}`)}
         />
       </div>
-    </div>
+    </>
   );
+}
+
+interface CourseSidebarProps {
+  variant?: "fixed" | "drawer";
+  drawerOpen?: boolean;
+  onDrawerClose?: () => void;
+}
+
+export function CourseSidebar({ variant = "fixed", drawerOpen = false, onDrawerClose }: CourseSidebarProps) {
+  const panel = <CourseSidebarPanel onNavigate={onDrawerClose} />;
+
+  if (variant === "drawer") {
+    return (
+      <Drawer
+        placement="left"
+        open={drawerOpen}
+        onClose={onDrawerClose}
+        width={280}
+        styles={{ body: { padding: 0 } }}
+        closable={false}
+      >
+        <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>{panel}</div>
+      </Drawer>
+    );
+  }
+
+  return <div className="course-sidebar">{panel}</div>;
 }

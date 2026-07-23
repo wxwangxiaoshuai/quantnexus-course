@@ -64,7 +64,7 @@ export function LessonView() {
   const done = isComplete(lesson.id);
 
   return (
-    <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px 24px" }}>
+    <div className="learn-page-content learn-page-content--narrow">
       <Space style={{ marginBottom: 8 }}>
         <Text style={{ color: "#6b7280" }}>
           {mod.icon} {mod.title}
@@ -101,7 +101,7 @@ export function LessonView() {
         </Button>
       )}
 
-      <Space style={{ marginTop: 24, display: "flex", justifyContent: "space-between" }}>
+      <div className="learn-lesson-nav">
         {prev ? (
           <Button icon={<ArrowLeftOutlined />} onClick={() => navigate(`/learn/${prev.moduleId}/${prev.lessonId}`)}>
             上一课
@@ -116,7 +116,7 @@ export function LessonView() {
         ) : (
           <Button onClick={() => navigate("/learn")}>返回课程首页</Button>
         )}
-      </Space>
+      </div>
 
       {!next && <GraduationCard />}
     </div>

@@ -104,11 +104,11 @@ export function OverfittingDemo() {
       </Text>
 
       <Row gutter={16} style={{ marginBottom: 12 }}>
-        <Col span={12}>
+        <Col xs={24} md={12}>
           <Text style={{ color: "#6b7280", fontSize: 12 }}>快线 = {fast}</Text>
           <Slider min={2} max={10} value={fast} onChange={setFast} trackStyle={{ background: "#1677ff" }} />
         </Col>
-        <Col span={12}>
+        <Col xs={24} md={12}>
           <Text style={{ color: "#6b7280", fontSize: 12 }}>慢线 = {slow}</Text>
           <Slider min={5} max={30} value={slow} onChange={setSlow} trackStyle={{ background: "#1677ff" }} />
         </Col>

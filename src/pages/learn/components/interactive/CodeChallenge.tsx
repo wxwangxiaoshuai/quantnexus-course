@@ -185,21 +185,21 @@ export function CodeChallenge() {
             <>
               <ReactECharts option={option!} style={{ height: 200 }} />
               <Row gutter={16} style={{ marginTop: 8 }}>
-                <Col span={8}>
+                <Col xs={24} sm={8}>
                   <Statistic
                     title={<Text style={{ color: "#6b7280", fontSize: 12 }}>总收益率</Text>}
                     value={`${result.finalReturn >= 0 ? "+" : ""}${result.finalReturn.toFixed(1)}%`}
                     valueStyle={{ color: result.finalReturn >= 0 ? "#ef5350" : "#26a69a", fontSize: 18 }}
                   />
                 </Col>
-                <Col span={8}>
+                <Col xs={24} sm={8}>
                   <Statistic
                     title={<Text style={{ color: "#6b7280", fontSize: 12 }}>交易次数</Text>}
                     value={result.trades}
                     valueStyle={{ color: "#1f2937", fontSize: 18 }}
                   />
                 </Col>
-                <Col span={8}>
+                <Col xs={24} sm={8}>
                   <Statistic
                     title={<Text style={{ color: "#6b7280", fontSize: 12 }}>累计成本</Text>}
                     value={costEnabled ? result.totalCost : 0}

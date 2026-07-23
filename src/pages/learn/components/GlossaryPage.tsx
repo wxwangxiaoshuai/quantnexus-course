@@ -17,7 +17,7 @@ export function GlossaryPage() {
   }, [query]);
 
   return (
-    <div style={{ maxWidth: 760, margin: "0 auto", padding: "32px 24px" }}>
+    <div className="learn-page-content learn-page-content--glossary">
       <Button icon={<ArrowLeftOutlined />} onClick={() => navigate("/learn")} style={{ marginBottom: 16 }}>
         返回课程首页
       </Button>

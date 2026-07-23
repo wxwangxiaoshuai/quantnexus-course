@@ -98,11 +98,11 @@ export function RuinSimulator() {
         模拟 {RUNS} 条随机交易路径，观察不同仓位比例下的爆仓概率
       </Text>
       <Row gutter={[16, 8]} style={{ marginBottom: 12 }}>
-        <Col span={12}>
+        <Col xs={24} md={12}>
           <Text style={{ color: "#6b7280", fontSize: 12 }}>胜率 = {winRate}%</Text>
           <Slider min={30} max={70} value={winRate} onChange={setWinRate} trackStyle={{ background: "#1677ff" }} />
         </Col>
-        <Col span={12}>
+        <Col xs={24} md={12}>
           <Text style={{ color: "#6b7280", fontSize: 12 }}>每次风险比例 = {riskPct}%</Text>
           <Slider
             min={1}
@@ -113,13 +113,13 @@ export function RuinSimulator() {
             trackStyle={{ background: "#f0883e" }}
           />
         </Col>
-        <Col span={12}>
+        <Col xs={24} md={12}>
           <Text style={{ color: "#6b7280", fontSize: 12 }}>
             盈亏比（赢/输）= {avgWin}/{avgLoss}
           </Text>
           <Slider min={0.5} max={3} step={0.1} value={avgWin} onChange={setAvgWin} trackStyle={{ background: "#26a69a" }} />
         </Col>
-        <Col span={12} style={{ display: "flex", alignItems: "flex-end" }}>
+        <Col xs={24} md={12} style={{ display: "flex", alignItems: "flex-end" }}>
           <Button onClick={() => setSeed((s) => s + 1)}>重新模拟</Button>
         </Col>
       </Row>
@@ -127,21 +127,21 @@ export function RuinSimulator() {
       <ReactECharts option={option} style={{ height: 280 }} />
 
       <Row gutter={16} style={{ marginTop: 12 }}>
-        <Col span={8}>
+        <Col xs={24} sm={8}>
           <Statistic
             title={<Text style={{ color: "#6b7280", fontSize: 12 }}>爆仓概率</Text>}
             value={`${ruinRate.toFixed(0)}%`}
             valueStyle={{ color: ruinRate > 30 ? "#ef5350" : "#26a69a", fontSize: 20 }}
           />
         </Col>
-        <Col span={8}>
+        <Col xs={24} sm={8}>
           <Statistic
             title={<Text style={{ color: "#6b7280", fontSize: 12 }}>中位数最终资金</Text>}
             value={`${medianFinal.toFixed(0)}%`}
             valueStyle={{ color: medianFinal > 100 ? "#ef5350" : "#26a69a", fontSize: 20 }}
           />
         </Col>
-        <Col span={8}>
+        <Col xs={24} sm={8}>
           <Statistic
             title={<Text style={{ color: "#6b7280", fontSize: 12 }}>期望值/笔</Text>}
             value={`${((((winRate / 100) * avgWin - (1 - winRate / 100) * avgLoss) * riskPct)).toFixed(2)}%`}

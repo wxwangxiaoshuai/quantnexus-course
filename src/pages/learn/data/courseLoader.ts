@@ -45,7 +45,7 @@ const RAW = import.meta.glob("./content/*.md", {
  *       field2: value2
  */
 function parseFrontmatter(raw: string): { data: LessonFrontmatter; content: string } {
-  const lines = raw.split("\n");
+  const lines = raw.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n");
   if (lines[0].trim() !== "---") {
     return { data: {} as LessonFrontmatter, content: raw };
   }

@@ -140,11 +140,11 @@ export function StrategySandbox() {
       style={{ background: "#ffffff", border: "1px solid #e5e7eb", margin: "16px 0" }}
     >
       <Row gutter={16} style={{ marginBottom: 12 }}>
-        <Col span={12}>
+        <Col xs={24} md={12}>
           <Text style={{ color: "#6b7280", fontSize: 12 }}>快线周期 = {fastPeriod}</Text>
           <Slider min={3} max={15} value={fastPeriod} onChange={setFastPeriod} trackStyle={{ background: "#1677ff" }} />
         </Col>
-        <Col span={12}>
+        <Col xs={24} md={12}>
           <Text style={{ color: "#6b7280", fontSize: 12 }}>慢线周期 = {slowPeriod}</Text>
           <Slider min={15} max={40} value={slowPeriod} onChange={setSlowPeriod} trackStyle={{ background: "#f0883e" }} />
         </Col>
@@ -173,24 +173,24 @@ export function StrategySandbox() {
       <ReactECharts option={option} style={{ height: 380 }} />
 
       <Row gutter={16} style={{ marginTop: 12 }}>
-        <Col span={6}>
+        <Col xs={12} sm={6}>
           <Statistic
             title={<Text style={{ color: "#6b7280", fontSize: 12 }}>当前快线</Text>}
             value={currentF?.toFixed(1) ?? "--"}
             valueStyle={{ color: "#1677ff", fontSize: 16 }}
           />
         </Col>
-        <Col span={6}>
+        <Col xs={12} sm={6}>
           <Statistic
             title={<Text style={{ color: "#6b7280", fontSize: 12 }}>当前慢线</Text>}
             value={currentS?.toFixed(1) ?? "--"}
             valueStyle={{ color: "#f0883e", fontSize: 16 }}
           />
         </Col>
-        <Col span={6}>
+        <Col xs={12} sm={6}>
           <Statistic title={<Text style={{ color: "#6b7280", fontSize: 12 }}>交易次数</Text>} value={trades.length} valueStyle={{ color: "#1f2937", fontSize: 16 }} />
         </Col>
-        <Col span={6}>
+        <Col xs={12} sm={6}>
           <Statistic
             title={<Text style={{ color: "#6b7280", fontSize: 12 }}>累计盈亏</Text>}
             value={`${totalPnl >= 0 ? "+" : ""}${totalPnl.toFixed(0)}`}

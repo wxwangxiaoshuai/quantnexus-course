@@ -165,12 +165,12 @@ export function IndicatorLab() {
 
       {(indicator === "MA" || indicator === "EMA" || indicator === "BOLL") && (
         <Row gutter={16} style={{ marginBottom: 8 }}>
-          <Col span={12}>
+          <Col xs={24} md={12}>
             <Text style={{ color: "#6b7280", fontSize: 12 }}>周期 N = {period}</Text>
             <Slider min={5} max={60} value={period} onChange={setPeriod} trackStyle={{ background: "#1677ff" }} />
           </Col>
           {indicator === "BOLL" && (
-            <Col span={12}>
+            <Col xs={24} md={12}>
               <Text style={{ color: "#6b7280", fontSize: 12 }}>标准差倍数 = {stdDev}</Text>
               <Slider min={1} max={3} step={0.5} value={stdDev} onChange={setStdDev} trackStyle={{ background: "#1677ff" }} />
             </Col>
@@ -180,11 +180,11 @@ export function IndicatorLab() {
 
       {indicator === "MACD" && (
         <Row gutter={16} style={{ marginBottom: 8 }}>
-          <Col span={8}>
+          <Col xs={24} sm={8}>
             <Text style={{ color: "#6b7280", fontSize: 12 }}>快线 = {fastPeriod}</Text>
             <Slider min={5} max={20} value={fastPeriod} onChange={setFastPeriod} trackStyle={{ background: "#1677ff" }} />
           </Col>
-          <Col span={8}>
+          <Col xs={24} sm={8}>
             <Text style={{ color: "#6b7280", fontSize: 12 }}>慢线 = {slowPeriod}</Text>
             <Slider min={15} max={50} value={slowPeriod} onChange={setSlowPeriod} trackStyle={{ background: "#1677ff" }} />
           </Col>

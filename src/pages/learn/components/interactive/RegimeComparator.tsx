@@ -150,7 +150,7 @@ export function RegimeComparator() {
       <ReactECharts option={option} style={{ height: 380 }} />
 
       <Row gutter={16} style={{ marginTop: 8 }}>
-        <Col span={12}>
+        <Col xs={24} md={12}>
           <div style={{ background: "#f6f8fb", borderRadius: 6, padding: "8px 12px" }}>
             <Text style={{ color: "#6b7280", fontSize: 12 }}>📈 趋势跟踪</Text>
             <div>
@@ -160,7 +160,7 @@ export function RegimeComparator() {
             </div>
           </div>
         </Col>
-        <Col span={12}>
+        <Col xs={24} md={12}>
           <div style={{ background: "#f6f8fb", borderRadius: 6, padding: "8px 12px" }}>
             <Text style={{ color: "#6b7280", fontSize: 12 }}>🔄 均值回归</Text>
             <div>
