@@ -1,0 +1,196 @@
+[
+  {
+    "id": "m1",
+    "title": "第一模块：期货是什么",
+    "description": "从零开始理解期货合约，建立正确的市场认知",
+    "icon": "📦",
+    "elective": false,
+    "lessons": [
+      "m1l1",
+      "m1l2",
+      "m1l3",
+      "m1l4"
+    ]
+  },
+  {
+    "id": "m2",
+    "title": "第二模块：交易是怎么发生的",
+    "description": "理解交易所、经纪商、盘口和委托类型",
+    "icon": "🏛️",
+    "elective": false,
+    "lessons": [
+      "m2l1",
+      "m2l2",
+      "m2l3",
+      "m2l4",
+      "m2l5",
+      "m2l6"
+    ]
+  },
+  {
+    "id": "m3",
+    "title": "第三模块：行情数据",
+    "description": "理解 Tick 数据、K 线聚合，掌握数据基础",
+    "icon": "📊",
+    "elective": false,
+    "lessons": [
+      "m3l1",
+      "m3l2",
+      "m3l3",
+      "m3l4",
+      "m3l5"
+    ]
+  },
+  {
+    "id": "m4",
+    "title": "第四模块：技术指标",
+    "description": "用程序员视角理解均线、MACD、布林带等经典指标",
+    "icon": "📈",
+    "elective": false,
+    "lessons": [
+      "m4l0",
+      "m4l1",
+      "m4l2",
+      "m4l3"
+    ]
+  },
+  {
+    "id": "m5",
+    "title": "第五模块：你的第一个策略",
+    "description": "从零构建双均线策略，理解策略的本质",
+    "icon": "🎯",
+    "elective": false,
+    "lessons": [
+      "m5l1",
+      "m5l2",
+      "m5l3",
+      "m5l4"
+    ]
+  },
+  {
+    "id": "m6",
+    "title": "第六模块：回测——策略的单元测试",
+    "description": "理解回测原理、绩效指标，以及回测的四大陷阱",
+    "icon": "🧪",
+    "elective": false,
+    "lessons": [
+      "m6l1",
+      "m6l2",
+      "m6l3",
+      "m6l4",
+      "m6l5",
+      "m6l6",
+      "m6l7"
+    ]
+  },
+  {
+    "id": "m7",
+    "title": "第七模块：风险管理",
+    "description": "比策略更重要的事：仓位控制与止损",
+    "icon": "🛡️",
+    "elective": false,
+    "lessons": [
+      "m7l1",
+      "m7l2",
+      "m7l3",
+      "m7l4",
+      "m7l5",
+      "m7l6",
+      "m7l7"
+    ]
+  },
+  {
+    "id": "m8",
+    "title": "第八模块：策略范式地图",
+    "description": "了解趋势跟踪、均值回归、套利等主要策略范式",
+    "icon": "🗺️",
+    "elective": false,
+    "lessons": [
+      "m8l1",
+      "m8l2",
+      "m8l3",
+      "m8l4",
+      "m8l5",
+      "m8l6",
+      "m8l7"
+    ]
+  },
+  {
+    "id": "m9",
+    "title": "第九模块：通往实盘",
+    "description": "从回测到实盘的正确路径，以及你手里的 QuantNexus",
+    "icon": "🚀",
+    "elective": false,
+    "lessons": [
+      "m9l1",
+      "m9l2",
+      "m9l3",
+      "m9l4"
+    ]
+  },
+  {
+    "id": "m10",
+    "title": "第十模块：因子研究",
+    "description": "【进阶·选修】从策略思维升级到因子思维——系统性寻找Alpha来源。不计入主线毕业条件，建议完成 m1-m9 主线后再学习",
+    "icon": "🔬",
+    "elective": true,
+    "lessons": [
+      "m10l1",
+      "m10l2",
+      "m10l3",
+      "m10l4"
+    ]
+  },
+  {
+    "id": "m11",
+    "title": "第十一模块：统计学习入门",
+    "description": "【进阶·选修】用机器学习的思想增强策略研发能力，但保持简单可控。不计入主线毕业条件，建议完成 m1-m9 主线后再学习",
+    "icon": "🤖",
+    "elective": true,
+    "lessons": [
+      "m11l1",
+      "m11l2",
+      "m11l3",
+      "m11l4"
+    ]
+  },
+  {
+    "id": "m12",
+    "title": "第十二模块：CTA 趋势跟踪实战",
+    "description": "项目一：唐奇安通道突破策略，从数据下载到实盘上线全流程，在 QuantNexus 系统中直接操作",
+    "icon": "🚀",
+    "elective": false,
+    "lessons": [
+      "m12l1",
+      "m12l2",
+      "m12l3",
+      "m12l4",
+      "m12l5"
+    ]
+  },
+  {
+    "id": "m13",
+    "title": "第十三模块：跨品种统计套利",
+    "description": "项目二：rb+hc 卷螺差配对交易，从价差分析到双品种风控全流程",
+    "icon": "🔗",
+    "elective": false,
+    "lessons": [
+      "m13l1",
+      "m13l2",
+      "m13l3"
+    ]
+  },
+  {
+    "id": "m14",
+    "title": "第十四模块：多因子截面策略",
+    "description": "项目三：8 品种多因子截面策略，从因子库构建到多策略组合运维全流程",
+    "icon": "🧩",
+    "elective": false,
+    "lessons": [
+      "m14l1",
+      "m14l2",
+      "m14l3",
+      "m14l4"
+    ]
+  }
+]

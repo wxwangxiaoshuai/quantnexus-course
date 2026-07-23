@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+dist-ssr/
+
+# temp / cache
+*.local
+.vite/
+node_modules/.tmp/
+
+# 转换脚本临时数据源（从主项目复制的原始 courseContent 副本，不入库）
+scripts/_tmp/
+
+# editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# os
+.DS_Store
