@@ -16,9 +16,13 @@ const navItems = [
 function Logo() {
   return (
     <Link to="/" className="group flex items-center gap-2.5">
-      <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-700 shadow-lg shadow-brand-700/30 transition-transform group-hover:scale-105">
-        <span className="text-lg">📈</span>
-      </span>
+      <img
+        src={`${import.meta.env.BASE_URL}favicon.svg`}
+        alt=""
+        width={36}
+        height={36}
+        className="h-9 w-9 rounded-xl shadow-lg shadow-brand-700/30 transition-transform group-hover:scale-105"
+      />
       <span className="flex flex-col leading-none">
         <span className="font-brand text-sm font-bold tracking-tight text-ink-50">量化交易课程</span>
         <span className="text-[11px] text-ink-400">QuantNexus</span>
