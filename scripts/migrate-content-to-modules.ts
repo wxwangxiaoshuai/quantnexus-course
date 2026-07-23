@@ -397,9 +397,12 @@ function main() {
     const hours = Math.max(1, Math.round((totalMinutes / 60) * 10) / 10);
     const titleClean = mod.title.replace(/^第.+模块：/, "");
 
-    // project markdown stub pointing learners to module lessons / interactive
-    const projectMd = `# ${proj.title}\n\n${proj.summary}\n\n## 交付物\n\n${proj.deliverables.map((d) => `- ${d}`).join("\n")}\n\n## 技术栈\n\n${proj.stack.map((s) => `- ${s}`).join("\n")}\n\n完成本模块全部课节与互动实验后，即可视为完成本项目。\n`;
-    fs.writeFileSync(path.join(modDir, `project-${proj.id.toLowerCase()}.md`), projectMd, "utf8");
+    // project markdown — skip if already authored (avoid clobbering hand-written briefs)
+    const projectPath = path.join(modDir, `project-${proj.id.toLowerCase()}.md`);
+    if (!fs.existsSync(projectPath)) {
+      const projectMd = `# ${proj.title}\n\n${proj.summary}\n\n> 请从项目页查看完整 brief；本文件为占位。\n`;
+      fs.writeFileSync(projectPath, projectMd, "utf8");
+    }
 
     moduleBlocks.push(`    {
       id: ${moduleNum},

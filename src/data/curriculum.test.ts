@@ -29,6 +29,27 @@ describe("curriculum structure", () => {
     }
   });
 
+  it("every project has enriched metadata", () => {
+    for (const m of curriculum.modules) {
+      const p = m.project!;
+      expect(p.durationMinutes).toBeGreaterThan(0);
+      expect(p.objectives.length).toBeGreaterThan(0);
+      expect(p.relatedLessons.length).toBeGreaterThan(0);
+      expect(p.acceptanceCriteria.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("m14 l14-01 recommends m10 ic lesson as prerequisite", () => {
+    const m14 = curriculum.modules.find((m) => m.id === 14)!;
+    const l01 = m14.lessons.find((l) => l.id === "L14-01")!;
+    expect(l01.prerequisites).toContain("L10-02");
+  });
+
+  it("m13 hours reflects practice time", () => {
+    const m13 = curriculum.modules.find((m) => m.id === 13)!;
+    expect(m13.hours).toBeGreaterThanOrEqual(2);
+  });
+
   it("elective modules are m10/m11 only", () => {
     const elective = curriculum.modules.filter((m) => m.elective).map((m) => m.id);
     expect(elective).toEqual([10, 11]);

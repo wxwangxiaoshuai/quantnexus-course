@@ -28,6 +28,9 @@ export function ProjectsPage() {
               </div>
               <h3 className="mt-3 text-lg font-semibold text-ink-50">{p.title}</h3>
               <p className="mt-2 flex-1 text-sm text-ink-400">{p.summary}</p>
+              <p className="mt-2 text-xs text-brand-400/80">
+                预计 {p.durationMinutes >= 60 ? `${Math.round(p.durationMinutes / 60 * 10) / 10} 小时` : `${p.durationMinutes} 分钟`}
+              </p>
               <div className="mt-4 flex flex-wrap gap-1.5">
                 {p.stack.slice(0, 4).map((s) => (
                   <Tag key={s}>{s}</Tag>

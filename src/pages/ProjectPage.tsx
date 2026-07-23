@@ -4,6 +4,13 @@ import { curriculum } from "../data/curriculum";
 import { DifficultyBadge, Tag } from "../components/Badges";
 import { MarkdownRenderer } from "../components/MarkdownRenderer";
 
+function formatDuration(minutes: number) {
+  if (minutes < 60) return `${minutes} 分钟`;
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return m > 0 ? `${h} 小时 ${m} 分钟` : `${h} 小时`;
+}
+
 export function ProjectPage() {
   const { moduleId, projectId } = useParams<{ moduleId: string; projectId: string }>();
   const module = curriculum.modules.find((m) => m.id === Number(moduleId));
@@ -37,6 +44,9 @@ export function ProjectPage() {
     );
   }
 
+  const lessonById = new Map(module.lessons.map((l) => [l.id, l]));
+  const firstLesson = module.lessons[0];
+
   return (
     <div className="container-page py-12 sm:py-16">
       <nav className="mb-8 flex flex-wrap items-center gap-2 text-sm text-ink-500">
@@ -57,6 +67,7 @@ export function ProjectPage() {
             <span className="font-mono text-xs text-amber-400">{project.id}</span>
             <DifficultyBadge level={project.difficulty} />
             <span className="text-xs text-ink-500">模块 {module.id}</span>
+            <span className="text-xs text-ink-500">· 预计 {formatDuration(project.durationMinutes)}</span>
           </div>
           <h1 className="mt-3 text-2xl font-extrabold text-ink-50 sm:text-3xl">{project.title}</h1>
           <p className="mt-2 text-ink-400">{project.summary}</p>
@@ -68,16 +79,65 @@ export function ProjectPage() {
         </div>
       </div>
 
-      <div className="mt-6 card p-5">
-        <h2 className="mb-3 text-sm font-semibold text-ink-100">交付物</h2>
-        <ul className="space-y-2">
-          {project.deliverables.map((d) => (
-            <li key={d} className="flex gap-2 text-sm text-ink-300">
-              <span className="text-amber-400">✓</span>
-              {d}
-            </li>
-          ))}
-        </ul>
+      {project.objectives.length > 0 && (
+        <div className="mt-6 card p-5">
+          <h2 className="mb-3 text-sm font-semibold text-ink-100">学习目标</h2>
+          <ul className="space-y-2">
+            {project.objectives.map((o) => (
+              <li key={o} className="flex gap-2 text-sm text-ink-300">
+                <span className="text-brand-400">→</span>
+                {o}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {project.relatedLessons.length > 0 && (
+        <div className="mt-6 card p-5">
+          <h2 className="mb-3 text-sm font-semibold text-ink-100">关联课节</h2>
+          <ul className="space-y-2">
+            {project.relatedLessons.map((lid) => {
+              const lesson = lessonById.get(lid);
+              if (!lesson) return null;
+              return (
+                <li key={lid}>
+                  <Link
+                    to={`/curriculum/${module.id}/${lid}`}
+                    className="text-sm text-brand-400 hover:text-brand-300"
+                  >
+                    {lid} · {lesson.title}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+
+      <div className="mt-6 grid gap-5 sm:grid-cols-2">
+        <div className="card p-5">
+          <h2 className="mb-3 text-sm font-semibold text-ink-100">交付物</h2>
+          <ul className="space-y-2">
+            {project.deliverables.map((d) => (
+              <li key={d} className="flex gap-2 text-sm text-ink-300">
+                <span className="text-amber-400">✓</span>
+                {d}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="card p-5">
+          <h2 className="mb-3 text-sm font-semibold text-ink-100">验收标准</h2>
+          <ul className="space-y-2">
+            {project.acceptanceCriteria.map((c) => (
+              <li key={c} className="flex gap-2 text-sm text-ink-300">
+                <span className="text-brand-400">☐</span>
+                {c}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       <div className="mt-8">
@@ -92,9 +152,18 @@ export function ProjectPage() {
         <Link to={`/curriculum/${module.id}`} className="btn-ghost">
           ← 返回模块
         </Link>
-        <Link to={`/curriculum/${module.id}/${module.lessons[0].id}`} className="btn-primary">
-          从本模块第一课开始
-        </Link>
+        {project.relatedLessons[0] ? (
+          <Link
+            to={`/curriculum/${module.id}/${project.relatedLessons[0]}`}
+            className="btn-primary"
+          >
+            从关联课节开始
+          </Link>
+        ) : (
+          <Link to={`/curriculum/${module.id}/${firstLesson.id}`} className="btn-primary">
+            从本模块第一课开始
+          </Link>
+        )}
       </div>
     </div>
   );

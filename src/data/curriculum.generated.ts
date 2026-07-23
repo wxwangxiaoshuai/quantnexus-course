@@ -1,8 +1,8 @@
 /* eslint-disable */
 /** 由 scripts/migrate-content-to-modules.ts 自动生成，请勿手改 */
-import type { Curriculum, Stage } from "./types";
+import type { GeneratedCurriculum, Stage } from "./types";
 
-export const curriculum: Curriculum = {
+export const curriculum: GeneratedCurriculum = {
   title: "量化交易课程",
   tagline: "从期货基础到生产级策略 · 程序员视角的系统化路径",
   description:

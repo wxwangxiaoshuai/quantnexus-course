@@ -23,7 +23,7 @@ export interface Lesson {
   quizId?: string;
 }
 
-export interface Project {
+export interface ProjectBase {
   id: string;
   title: string;
   summary: string;
@@ -31,6 +31,18 @@ export interface Project {
   difficulty: Difficulty;
   deliverables: string[];
   stack: string[];
+}
+
+export interface Project extends ProjectBase {
+  /** 预计完成时长（分钟） */
+  durationMinutes: number;
+  objectives: string[];
+  /** 关联课节 id，如 L01-02 */
+  relatedLessons: string[];
+  /** 核心互动 registry type，无则省略 */
+  interactive?: string;
+  /** 核心概念标签 — stack 字段复用 ProjectBase.stack */
+  acceptanceCriteria: string[];
 }
 
 export interface Module {
@@ -47,11 +59,19 @@ export interface Module {
   project?: Project;
 }
 
+/** curriculum.generated.ts 中 module.project 的 stub 形态 */
+export type GeneratedModule = Omit<Module, "project"> & { project?: ProjectBase };
+
 export interface Curriculum {
   title: string;
   tagline: string;
   description: string;
   modules: Module[];
+}
+
+/** scripts/migrate 生成的 curriculum 形态（project 为 stub） */
+export interface GeneratedCurriculum extends Omit<Curriculum, "modules"> {
+  modules: GeneratedModule[];
 }
 
 export interface QuizQuestion {
