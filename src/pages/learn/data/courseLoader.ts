@@ -10,8 +10,9 @@
  * - ```lang ... ```   → { type: "code", language, content }
  * - <!-- interactive:N --> → frontmatter interactive[N-1] → { type:"interactive", componentId }
  * - <!-- quiz:N -->     → frontmatter quiz[N-1] → { type:"quiz", quizId }
+ *
+ * 注意：frontmatter 用手写轻量 YAML 解析（gray-matter 依赖 Node Buffer，浏览器不可用）。
  */
-import matter from "gray-matter";
 import type { CourseModule, Lesson, LessonContentBlock } from "./types";
 
 interface LessonFrontmatter {
@@ -32,6 +33,85 @@ const RAW = import.meta.glob("./content/*.md", {
   import: "default",
   eager: true,
 }) as Record<string, string>;
+
+/**
+ * 手写轻量 frontmatter 解析：只覆盖课程用到的字段（标量 + 对象数组）。
+ * 避免 gray-matter 的 Node Buffer 依赖。
+ *
+ * 支持的 YAML 形态：
+ *   key: value                      标量
+ *   key:                            对象数组
+ *     - field1: value1
+ *       field2: value2
+ */
+function parseFrontmatter(raw: string): { data: LessonFrontmatter; content: string } {
+  const lines = raw.split("\n");
+  if (lines[0].trim() !== "---") {
+    return { data: {} as LessonFrontmatter, content: raw };
+  }
+  const data: Record<string, unknown> = {};
+  let i = 1;
+  let endLine = lines.length;
+  for (; i < lines.length; i++) {
+    if (lines[i].trim() === "---") {
+      endLine = i;
+      break;
+    }
+  }
+  const fmLines = lines.slice(1, endLine);
+  let k = 0;
+  while (k < fmLines.length) {
+    const line = fmLines[k];
+    const m = line.match(/^(\w+):\s*(.*)$/);
+    if (!m) {
+      k++;
+      continue;
+    }
+    const key = m[1];
+    const val = m[2].trim();
+    if (val === "") {
+      // 对象数组
+      const arr: Record<string, unknown>[] = [];
+      k++;
+      let cur: Record<string, unknown> | null = null;
+      while (k < fmLines.length) {
+        const al = fmLines[k];
+        const itemMatch = al.match(/^\s+-\s+(\w+):\s*(.*)$/);
+        if (itemMatch) {
+          cur = {};
+          cur[itemMatch[1]] = parseScalar(itemMatch[2]);
+          arr.push(cur);
+          k++;
+          continue;
+        }
+        const subMatch = al.match(/^\s{4}(\w+):\s*(.*)$/);
+        if (subMatch && cur) {
+          cur[subMatch[1]] = parseScalar(subMatch[2]);
+          k++;
+          continue;
+        }
+        break;
+      }
+      data[key] = arr;
+    } else {
+      data[key] = parseScalar(val);
+      k++;
+    }
+  }
+  const content = lines.slice(endLine + 1).join("\n");
+  return { data: data as unknown as LessonFrontmatter, content };
+}
+
+function parseScalar(s: string): string | number | boolean {
+  if (s === "true") return true;
+  if (s === "false") return false;
+  if (/^-?\d+$/.test(s)) return Number(s);
+  // 去掉首尾引号
+  if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) {
+    return s.slice(1, -1);
+  }
+  return s;
+}
 
 interface ParsedLesson {
   fm: LessonFrontmatter;
@@ -127,8 +207,7 @@ function parseAll(): Map<string, ParsedLesson> {
   const map = new Map<string, ParsedLesson>();
   for (const [path, raw] of Object.entries(RAW)) {
     if (path.endsWith("modules.json")) continue;
-    const { data, content } = matter(raw);
-    const fm = data as LessonFrontmatter;
+    const { data: fm, content } = parseFrontmatter(raw);
     if (!fm.id) continue;
     const blocks = parseBody(content, fm);
     map.set(fm.id, { fm, blocks, file: path });
