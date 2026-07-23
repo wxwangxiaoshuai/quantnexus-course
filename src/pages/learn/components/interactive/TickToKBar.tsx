@@ -1,6 +1,6 @@
-import { Button, Card, Progress, Space, Tag, Typography } from "antd";
+import { Button, Card, Progress, Radio, Space, Tag, Typography } from "antd";
 import ReactECharts from "echarts-for-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const { Text, Title } = Typography;
 
@@ -18,6 +18,12 @@ interface KBar {
   volume: number;
   barIndex: number;
 }
+
+const BAR_OPTIONS = [
+  { label: "15 秒", value: 15000 },
+  { label: "30 秒", value: 30000 },
+  { label: "60 秒", value: 60000 },
+] as const;
 
 function generateTicks(count: number, basePrice: number): Tick[] {
   const ticks: Tick[] = [];
@@ -55,11 +61,11 @@ function ticksToKBar(ticks: Tick[], barDurationMs: number): KBar[] {
 }
 
 const ALL_TICKS = generateTicks(120, 3500);
-const BAR_DURATION = 30000;
 
 export function TickToKBar() {
   const [playIdx, setPlayIdx] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [barDuration, setBarDuration] = useState(30000);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
@@ -81,9 +87,9 @@ export function TickToKBar() {
     };
   }, [playing]);
 
-  const visibleTicks = ALL_TICKS.slice(0, playIdx + 1);
-  const bars = ticksToKBar(visibleTicks, BAR_DURATION);
+  const bars = useMemo(() => ticksToKBar(ALL_TICKS.slice(0, playIdx + 1), barDuration), [playIdx, barDuration]);
   const currentTick = ALL_TICKS[playIdx];
+  const barLabel = BAR_OPTIONS.find((o) => o.value === barDuration)?.label ?? `${barDuration / 1000} 秒`;
 
   const candleData = bars.map((b) => [b.open, b.close, b.low, b.high]);
   const candleXAxis = bars.map((b) => `K${b.barIndex + 1}`);
@@ -130,6 +136,20 @@ export function TickToKBar() {
       }
       style={{ background: "#ffffff", border: "1px solid #e5e7eb", margin: "16px 0" }}
     >
+      <Space style={{ marginBottom: 12, flexWrap: "wrap" }} align="center">
+        <Text style={{ color: "#4b5563", fontSize: 13 }}>聚合窗口：</Text>
+        <Radio.Group
+          optionType="button"
+          buttonStyle="solid"
+          value={barDuration}
+          options={BAR_OPTIONS.map((o) => ({ label: o.label, value: o.value }))}
+          onChange={(e) => {
+            setBarDuration(e.target.value);
+            setPlaying(false);
+            setPlayIdx(0);
+          }}
+        />
+      </Space>
       <Space style={{ marginBottom: 12, flexWrap: "wrap" }}>
         <Button type="primary" onClick={() => setPlaying((p) => !p)} disabled={playIdx >= ALL_TICKS.length - 1 && !playing}>
           {playing ? "⏸ 暂停" : "▶ 播放"}
@@ -145,7 +165,7 @@ export function TickToKBar() {
         <Tag color="blue">
           已推送 {playIdx + 1} / {ALL_TICKS.length} Tick
         </Tag>
-        <Tag color="geekblue">已生成 {bars.length} 根 K 线</Tag>
+        <Tag color="geekblue">已生成 {bars.length} 根 K 线（{barLabel}）</Tag>
         {currentTick && (
           <Tag color={currentTick.price >= (ALL_TICKS[Math.max(0, playIdx - 1)]?.price ?? currentTick.price) ? "red" : "green"}>
             最新 Tick: {currentTick.price}
@@ -160,7 +180,7 @@ export function TickToKBar() {
       />
       <ReactECharts option={option} style={{ height: 340 }} />
       <Text style={{ color: "#6b7280", fontSize: 12 }}>
-        每 30 秒的 Tick 聚合为一根 K 线（演示用，实盘通常用 1 分钟/5 分钟）
+        切换聚合窗口可对比同一 Tick 流下 K 线数量差异（演示用；实盘常用 1 分钟 / 5 分钟）
       </Text>
     </Card>
   );

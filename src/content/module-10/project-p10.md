@@ -48,7 +48,12 @@
 
 ## 代码提示
 
-L10-02 课节含示例代码片段，可直接改编。若无本地数据，可使用课内提供的 CSV 或 QuantNexus 导出数据。
+L10-02 课节含示例代码片段，可直接改编。样本面板数据见：
+
+[`samples/factor-panel-sample.csv`](/quantnexus-course/samples/factor-panel-sample.csv)
+
+字段：`date, symbol, close, momentum_20d, carry, forward_ret_1d` · 4 品种 × 约 65 个交易日。
+也可改用 QuantNexus 导出数据。
 
 ## 反思
 

@@ -44,7 +44,11 @@ export function ProjectPage() {
     );
   }
 
-  const lessonById = new Map(module.lessons.map((l) => [l.id, l]));
+  const lessonById = new Map(
+    curriculum.modules.flatMap((m) =>
+      m.lessons.map((l) => [l.id, { lesson: l, moduleId: m.id }] as const),
+    ),
+  );
   const firstLesson = module.lessons[0];
 
   return (
@@ -98,15 +102,15 @@ export function ProjectPage() {
           <h2 className="mb-3 text-sm font-semibold text-ink-100">关联课节</h2>
           <ul className="space-y-2">
             {project.relatedLessons.map((lid) => {
-              const lesson = lessonById.get(lid);
-              if (!lesson) return null;
+              const entry = lessonById.get(lid);
+              if (!entry) return null;
               return (
                 <li key={lid}>
                   <Link
-                    to={`/curriculum/${module.id}/${lid}`}
+                    to={`/curriculum/${entry.moduleId}/${lid}`}
                     className="text-sm text-brand-400 hover:text-brand-300"
                   >
-                    {lid} · {lesson.title}
+                    {lid} · {entry.lesson.title}
                   </Link>
                 </li>
               );

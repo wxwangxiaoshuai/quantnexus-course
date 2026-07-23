@@ -196,7 +196,7 @@ export const PROJECT_META: Record<string, Omit<Project, "id" | "module">> = {
     deliverables: ["IC 报告（表格）", "分层回测结果与结论"],
     stack: ["IC", "分层回测", "因子"],
     acceptanceCriteria: [
-      "选定 universe：至少 4 个期货品种、≥60 个交易日",
+      "使用 public/samples/factor-panel-sample.csv（或自有数据）：≥4 品种、≥60 交易日",
       "报告含 IC 均值、IC_IR、分层 top-bottom 收益差",
       "结论明确：保留/观察/放弃，并给出 1 条理由",
     ],
@@ -211,12 +211,12 @@ export const PROJECT_META: Record<string, Omit<Project, "id" | "module">> = {
       "完成互动挑战并复盘错题",
       "建立 ML 策略上线前的检查习惯",
     ],
-    relatedLessons: ["L11-04"],
+    relatedLessons: ["L11-04", "L06-02"],
     interactive: "lookAhead",
     deliverables: ["前视偏差挑战完成截图或记录", "防泄露检查表（≥8 项）"],
     stack: ["特征工程", "过拟合", "前视偏差"],
     acceptanceCriteria: [
-      "L06-02 或 L11-04 关联的前视偏差挑战全部通过",
+      "完成 L11-04（或 L06-02）中的前视偏差挑战全部关卡",
       "检查表含：标签泄露、未来函数、错误对齐、Purged CV 等",
       "能举例说明 1 个「看起来合理但泄露」的特征",
     ],

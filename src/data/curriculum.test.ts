@@ -50,6 +50,12 @@ describe("curriculum structure", () => {
     expect(m13.hours).toBeGreaterThanOrEqual(2);
   });
 
+  it("p11 related lessons include lookAhead home L11-04 and L06-02", () => {
+    const p11 = curriculum.modules.find((m) => m.id === 11)!.project!;
+    expect(p11.relatedLessons).toContain("L11-04");
+    expect(p11.relatedLessons).toContain("L06-02");
+  });
+
   it("elective modules are m10/m11 only", () => {
     const elective = curriculum.modules.filter((m) => m.elective).map((m) => m.id);
     expect(elective).toEqual([10, 11]);

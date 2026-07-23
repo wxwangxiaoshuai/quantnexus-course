@@ -91,6 +91,35 @@ export function LessonPage() {
               </div>
               <h1 className="mt-3 text-2xl font-extrabold tracking-tight text-ink-50 sm:text-3xl">{lesson.title}</h1>
               <p className="mt-2 text-ink-400">{lesson.summary}</p>
+              {lesson.prerequisites && lesson.prerequisites.length > 0 && (
+                <div className="mt-4 rounded-lg border border-amber-500/25 bg-amber-500/5 px-3 py-2.5">
+                  <div className="text-xs font-semibold text-amber-300/90">先修建议</div>
+                  <ul className="mt-1.5 space-y-1">
+                    {lesson.prerequisites.map((pid) => {
+                      const found = curriculum.modules
+                        .flatMap((m) => m.lessons.map((l) => ({ moduleId: m.id, lesson: l })))
+                        .find((x) => x.lesson.id === pid);
+                      if (!found) {
+                        return (
+                          <li key={pid} className="text-sm text-ink-400">
+                            {pid}
+                          </li>
+                        );
+                      }
+                      return (
+                        <li key={pid}>
+                          <Link
+                            to={`/curriculum/${found.moduleId}/${found.lesson.id}`}
+                            className="text-sm text-brand-400 hover:text-brand-300"
+                          >
+                            {found.lesson.id} · {found.lesson.title}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
 
