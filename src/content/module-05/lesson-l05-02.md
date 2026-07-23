@@ -1,0 +1,47 @@
+策略函数算出一个 BUY/SELL 信号后，到最终变成交易所里的一笔真实委托，中间经历了什么？作为程序员，这条链路你会很熟悉——它本质上是一个**事件驱动、回调驱动**的系统。
+
+```python
+# vn.py 风格的策略骨架（QuantNexus 引擎内核）
+class DualMaStrategy(CtaTemplate):
+    fast_period = 5
+    slow_period = 20
+
+    def on_bar(self, bar: BarData):
+        """每来一根新 K 线，引擎回调这个方法"""
+        self.am.update_bar(bar)
+        if not self.am.inited:
+            return
+
+        fast_ma = self.am.sma(self.fast_period)
+        slow_ma = self.am.sma(self.slow_period)
+
+        if fast_ma > slow_ma and self.pos <= 0:
+            self.buy(bar.close_price, volume=1)   # 发送委托，不是直接成交！
+        elif fast_ma < slow_ma and self.pos > 0:
+            self.sell(bar.close_price, volume=1)
+
+    def on_order(self, order: OrderData):
+        """委托状态变化时回调：已提交/已成交/已撤销/拒单"""
+        ...
+
+    def on_trade(self, trade: TradeData):
+        """委托被成交（可能部分成交）时回调。注意：self.pos 由引擎通过 update_pos(trade) 自动维护，策略无需（也不应）在这里手动累加，否则会重复计算。此处仅用于成交后的自定义处理（如重挂单、记录日志）。"""
+        # self.pos 由引擎自动更新，不要写 self.pos += ...
+        self.log(f"成交回报: {trade.vt_tradeid} 方向={trade.direction} 价格={trade.price} 数量={trade.volume}")
+```
+
+:::highlight blue
+关键认知：self.buy(...) 只是「发送一个委托请求」，不代表立刻成交。真实世界中，委托要经过：策略 → 交易引擎 → 网关（Gateway，对接交易所 API）→ 交易所撮合 → 成交回报逐级传回。这中间任何一环都可能有延迟、部分成交、拒单——这就是为什么模拟盘和实盘之间总有差距。
+:::
+
+**委托对象（Order）的关键字段**（和你写 REST API 的请求体本质是一回事）：
+
+- `symbol`：合约代码
+- `direction`：买/卖
+- `offset`：开仓/平仓（期货特有，股票没有这个概念）
+- `price` / `volume`：委托价格和数量
+- `status`：SUBMITTING → NOTTRADED → PARTTRADED → ALLTRADED / CANCELLED / REJECTED
+
+这也是 QuantNexus 交易页（/trading）里「活动委托」表格展示的核心数据结构。
+
+::quiz{id="q_m5d"}

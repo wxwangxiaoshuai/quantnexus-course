@@ -1,0 +1,93 @@
+有了多个通过检验的因子之后，下一步是**合成**——把多个因子的信号合并成一个综合信号。单因子有回撤期和季节效应，多因子组合可以平滑资金曲线。
+
+## 三种合成方法
+
+**方法 1：等权合成（Equal Weight）**
+
+最简单的做法——把每个因子的 Z-Score 加在一起除以因子数量：
+
+$$\text{Composite}_i = \frac{1}{K} \sum_{k=1}^{K} Z_{k,i}$$
+
+其中 $Z_{k,i}$ 是第 k 个因子在品种 i 上的标准化值（Z-Score 标准化：减去均值，除以标准差）。
+
+优点：稳健、不需要额外调参。缺点：所有因子一视同仁，弱因子稀释了强因子。
+
+**方法 2：IC 加权合成**
+
+根据每个因子的历史 IC 给它分配不同权重——预测力越强的因子，权重越大：
+
+$$\text{Composite}_i = \sum_{k=1}^{K} \frac{|IC_k|}{\sum_{j=1}^{K} |IC_j|} \cdot Z_{k,i}$$
+
+优点：让好因子发挥更大作用。缺点：IC 本身也有噪声——用近期的 IC 加权可能不稳定。
+
+**方法 3：回归加权合成**
+
+用历史收益率对因子值跑多元线性回归，回归系数就是权重：
+
+$$r_{i,t+1} = \beta_0 + \beta_1 f_{1,i,t} + \beta_2 f_{2,i,t} + \cdots + \beta_K f_{K,i,t} + \epsilon_{i,t}$$
+
+```python
+import numpy as np
+from sklearn.linear_model import Ridge
+
+def zscore_normalize(factor_series):
+    """Z-Score 标准化：减均值，除以标准差"""
+    return (factor_series - factor_series.mean()) / factor_series.std()
+
+def equal_weighted_composite(factors_dict):
+    """等权合成"""
+    composite = None
+    for name, values in factors_dict.items():
+        z = zscore_normalize(values)
+        composite = z if composite is None else composite + z
+    return composite / len(factors_dict)
+
+def ic_weighted_composite(factors_dict, ic_history):
+    """IC加权合成: ic_history = {factor_name: rolling_IC_mean}"""
+    total_weight = sum(abs(v) for v in ic_history.values())
+    composite = None
+    for name, values in factors_dict.items():
+        weight = abs(ic_history[name]) / total_weight if total_weight > 0 else 1/len(factors_dict)
+        z = zscore_normalize(values)
+        composite = z * weight if composite is None else composite + z * weight
+    return composite
+
+def regression_weighted_composite(factors_df, returns, alpha=1.0):
+    """Ridge回归加权合成: 收缩防止过拟合"""
+    model = Ridge(alpha=alpha)
+    model.fit(factors_df.fillna(0), returns)
+    weights = model.coef_
+    composite = np.dot(factors_df.fillna(0), weights)
+    return pd.Series(composite, index=factors_df.index), weights
+```
+
+## 因子相关性——警惕冗余因子
+
+先检查因子之间的相关性：
+
+```python
+factor_corr = factors_df.corr()  # 计算因子间相关系数矩阵
+```
+
+**判断标准**：
+- 相关性 > 0.7：两个因子高度冗余——你不需要两个，只保留 IC 更高的那个
+- 相关性 0.3-0.7：中度相关——可以同时保留，但要知道它们不完全独立
+- 相关性 < 0.3：低相关——理想的互补因子
+
+## 「少即是多」原则
+
+3-5 个不相关且有效的因子 >> 20 个相关的弱因子。
+
+多一个无效因子 = 多一个噪音来源 = 组合收益被稀释、换手成本被放大。
+
+**因子筛选 Checklist**：
+1. 每个因子必须通过 IC 验证（IC t-stat > 2）
+2. 两两相关性 < 0.5
+3. 每种因子有独立的经济学逻辑（不是参数变体）
+4. 总因子数 ≤ 8（超过后边际收益递减）
+
+:::highlight green
+因子合成的艺术 = 找到几个独立且有效的因子，平衡它们的优缺点。不是堆砌因子，是挑选因子。好的合成不只是让收益更高，更重要的是降低组合的波动——因为不同因子的回撤期往往不会完全重叠。
+:::
+
+::quiz{id="q_m10c"}

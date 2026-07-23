@@ -8,6 +8,16 @@
       name="description"
       content="中文量化交易课程 · 14 模块 68 课节 · 从期货基础到生产级策略"
     />
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("qn-course-theme");
+          if (t === "light" || (!t && window.matchMedia("(prefers-color-scheme: light)").matches)) {
+            document.documentElement.classList.add("light");
+          }
+        } catch (e) {}
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

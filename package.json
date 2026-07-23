@@ -12,7 +12,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "preview": "vite preview",
-    "convert:content": "tsx scripts/convert-content.ts"
+    "convert:content": "tsx scripts/convert-content.ts",
+    "migrate:content": "tsx scripts/migrate-content-to-modules.ts"
   },
   "dependencies": {
     "@ant-design/icons": "^5.6.1",
@@ -37,7 +38,10 @@
     "@types/react": "^18.3.20",
     "@types/react-dom": "^18.3.6",
     "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.5.4",
     "jsdom": "^26.1.0",
+    "postcss": "^8.5.22",
+    "tailwindcss": "^3.4.14",
     "tsx": "^4.19.0",
     "typescript": "~5.7.3",
     "vite": "^5.4.14",

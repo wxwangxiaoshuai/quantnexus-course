@@ -5,8 +5,8 @@ import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
-import { GlossaryPopover } from "./GlossaryPopover";
-import { GLOSSARY } from "../data/courseContent";
+import { GlossaryPopover } from "../../../components/GlossaryPopover";
+import { GLOSSARY } from "../../../data/quizzes";
 
 const BODY_STYLE: CSSProperties = {
   color: "#374151",

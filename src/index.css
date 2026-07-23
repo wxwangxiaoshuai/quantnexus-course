@@ -1,24 +1,198 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* QuantNexus tokens — teal signal on ink (from landing) */
 :root {
-  font-family: "Noto Sans SC", "Manrope", system-ui, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  color-scheme: dark;
+
+  --ink-50: 232 238 246;
+  --ink-100: 197 208 222;
+  --ink-200: 154 168 188;
+  --ink-300: 120 136 160;
+  --ink-400: 90 108 132;
+  --ink-500: 70 88 112;
+  --ink-600: 45 60 84;
+  --ink-700: 28 40 60;
+  --ink-800: 14 22 38;
+  --ink-900: 10 18 32;
+  --ink-950: 7 11 20;
+
+  /* signal teal as brand */
+  --brand-50: 232 250 245;
+  --brand-100: 200 242 232;
+  --brand-200: 150 228 210;
+  --brand-300: 90 212 188;
+  --brand-400: 56 204 176;
+  --brand-500: 46 196 166;
+  --brand-600: 26 158 132;
+  --brand-700: 20 128 108;
+  --brand-800: 16 96 82;
+  --brand-900: 14 72 62;
+  --brand-950: 8 40 36;
+
+  --glow-1: 46 196 166;
+  --glow-2: 232 165 75;
+  --glow-alpha-1: 0.14;
+  --glow-alpha-2: 0.08;
+  --grid-line: 232 238 246;
+  --grid-alpha: 0.06;
+  --btn-hover-text: 7 11 20;
 }
 
-* {
-  box-sizing: border-box;
+html.light {
+  color-scheme: light;
+
+  --ink-50: 7 11 20;
+  --ink-100: 14 22 38;
+  --ink-200: 28 40 60;
+  --ink-300: 45 60 84;
+  --ink-400: 70 88 112;
+  --ink-500: 90 108 132;
+  --ink-600: 120 136 160;
+  --ink-700: 197 208 222;
+  --ink-800: 232 238 246;
+  --ink-900: 244 247 251;
+  --ink-950: 255 255 255;
+
+  --brand-50: 232 250 245;
+  --brand-100: 200 242 232;
+  --brand-200: 150 228 210;
+  --brand-300: 26 158 132;
+  --brand-400: 20 128 108;
+  --brand-500: 16 110 92;
+  --brand-600: 14 96 80;
+  --brand-700: 12 80 68;
+  --brand-800: 10 64 54;
+  --brand-900: 8 48 40;
+  --brand-950: 6 32 28;
+
+  --glow-1: 46 196 166;
+  --glow-2: 232 165 75;
+  --glow-alpha-1: 0.08;
+  --glow-alpha-2: 0.06;
+  --grid-line: 0 0 0;
+  --grid-alpha: 0.05;
+  --btn-hover-text: 7 11 20;
+}
+
+html,
+body,
+#root {
+  height: 100%;
 }
 
 body {
   margin: 0;
   min-width: 320px;
-  min-height: 100vh;
-  background-color: #070b14;
+  background-color: rgb(var(--ink-950) / 1);
+  color: rgb(var(--ink-100) / 1);
+  @apply antialiased;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgb(var(--glow-1) / var(--glow-alpha-1)), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 100% 0%, rgb(var(--glow-2) / var(--glow-alpha-2)), transparent 55%);
+  background-attachment: fixed;
+  font-family: "Noto Sans SC", Manrope, system-ui, sans-serif;
 }
 
-#root {
-  min-height: 100vh;
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--ink-700) / 1);
+  @apply rounded-full border-2;
+  border-color: rgb(var(--ink-950) / 1);
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(var(--ink-600) / 1);
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
+  }
+
+  .card {
+    @apply rounded-2xl border transition-colors;
+    border-color: rgb(var(--ink-800) / 1);
+    background-color: rgb(var(--ink-900) / 1);
+  }
+
+  .card-hover:hover {
+    border-color: rgb(var(--brand-600) / 0.6);
+    background-color: rgb(var(--ink-800) / 0.5);
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn text-ink-950 shadow-lg;
+    background-color: rgb(var(--brand-500) / 1);
+  }
+  .btn-primary:hover {
+    background-color: rgb(var(--brand-400) / 1);
+  }
+
+  .btn-ghost {
+    @apply btn;
+    border: 1px solid rgb(var(--ink-700) / 1);
+    background-color: rgb(var(--ink-900) / 0.4);
+    color: rgb(var(--ink-200) / 1);
+  }
+  .btn-ghost:hover {
+    border-color: rgb(var(--brand-500) / 0.5);
+    color: rgb(var(--brand-400) / 1);
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium;
+  }
+
+  .section-title {
+    @apply text-3xl font-bold tracking-tight sm:text-4xl;
+    color: rgb(var(--ink-50) / 1);
+    font-family: "Noto Serif SC", Georgia, serif;
+  }
+
+  .section-eyebrow {
+    @apply mb-3 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest;
+    color: rgb(var(--brand-400) / 1);
+    font-family: Syne, "Noto Sans SC", system-ui, sans-serif;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      to right,
+      rgb(var(--brand-300) / 1),
+      rgb(var(--brand-500) / 1),
+      rgb(46 196 166 / 1)
+    );
+  }
+}
+
+.code-block {
+  @apply overflow-x-auto rounded-xl p-4 font-mono text-sm leading-relaxed;
+  border: 1px solid rgb(var(--ink-800) / 1);
+  background-color: rgb(var(--ink-950) / 0.8);
+  color: rgb(var(--ink-200) / 1);
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(to right, rgb(var(--grid-line) / var(--grid-alpha)) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(var(--grid-line) / var(--grid-alpha)) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0;
 }

@@ -1,0 +1,38 @@
+上一课让你亲手体验了过拟合的破坏力，那正确做法是什么？答案不是「不调参」，而是**用样本外表现来选参数，而不是样本内表现**。
+
+**程序员类比**：这和机器学习里的「训练集/验证集/测试集」拆分完全是同一套思想，避免模型死记硬背训练数据。
+
+:::highlight orange
+简单样本外验证的问题：如果只切一次「训练段 + 验证段」，验证段的表现可能只是运气好/差，样本量太小不足以下结论。
+:::
+
+**Walk-Forward（滚动样本外验证）**：把历史数据切成多段，像走楼梯一样滚动前进：
+
+1. 用第 1-12 个月数据调出最优参数，在第 13 个月（样本外）测试表现
+2. 向前滚动一个月：用第 2-13 个月数据重新调参，在第 14 个月测试
+3. 重复这个过程，把所有「样本外月份」的表现拼接起来，得到一条更可信的资金曲线
+
+这样做的核心价值：**每一段的样本外表现，都是用「未来会遇到的调参方式」模拟出来的**——因为实盘时你也是不断用最近数据重新评估参数，而不是一次性调好一劳永逸。
+
+```python
+def walk_forward(bars, window_train=252, window_test=21):
+    """简化版 Walk-Forward 框架"""
+    results = []
+    i = 0
+    while i + window_train + window_test <= len(bars):
+        train_data = bars[i : i + window_train]
+        test_data = bars[i + window_train : i + window_train + window_test]
+
+        best_params = optimize_params(train_data)   # 只在训练段调参
+        test_result = backtest(test_data, best_params)  # 在从未见过的数据上验证
+        results.append(test_result)
+
+        i += window_test  # 向前滚动一个测试窗口
+    return concatenate_equity_curves(results)
+```
+
+:::highlight blue
+Walk-Forward 不能完全消除过拟合风险，但它把「样本外测试」变成了持续、多次的常规动作，而不是一次性的运气检验。如果一个策略在多段滚动样本外测试中都稳定盈利，可信度远高于「只在一段历史上调出的完美参数」。
+:::
+
+::quiz{id="q_m6e"}
