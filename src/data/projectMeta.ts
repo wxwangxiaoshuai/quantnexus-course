@@ -1,5 +1,6 @@
 import type { Curriculum, Project } from "./types";
 import { curriculum as generatedCurriculum } from "./curriculum.generated";
+import { LESSON_OBJECTIVES, MODULE_HOURS } from "./lessonOverrides";
 
 /** 项目扩展元数据（覆盖/补全 curriculum.generated 中的 project stub） */
 export const PROJECT_META: Record<string, Omit<Project, "id" | "module">> = {
@@ -282,9 +283,17 @@ export const PROJECT_META: Record<string, Omit<Project, "id" | "module">> = {
   },
 };
 
-/** 模块级覆盖（如修正 hours） */
-export const MODULE_OVERRIDES: Record<number, { hours?: number; lessonPatches?: Record<string, { prerequisites?: string[] }> }> = {
-  13: { hours: 2.5 },
+/** 模块级覆盖（课节补丁）；学时以 MODULE_HOURS 为准 */
+export const MODULE_OVERRIDES: Record<
+  number,
+  {
+    hours?: number;
+    lessonPatches?: Record<
+      string,
+      { prerequisites?: string[]; quizId?: string; tags?: string[] }
+    >;
+  }
+> = {
   14: {
     lessonPatches: {
       "L14-01": { prerequisites: ["L10-02"] },
@@ -297,20 +306,22 @@ export function enrichCurriculum(base: typeof generatedCurriculum): Curriculum {
     ...base,
     modules: base.modules.map((mod) => {
       const override = MODULE_OVERRIDES[mod.id];
-      let lessons = mod.lessons;
-      if (override?.lessonPatches) {
-        lessons = lessons.map((l) => {
-          const patch = override.lessonPatches![l.id];
-          return patch ? { ...l, ...patch } : l;
-        });
-      }
+      const lessons = mod.lessons.map((l) => {
+        const patch = override?.lessonPatches?.[l.id];
+        const objectives = LESSON_OBJECTIVES[l.id] ?? l.objectives;
+        return {
+          ...l,
+          ...patch,
+          objectives,
+        };
+      });
       const stub = mod.project;
       const meta = stub ? PROJECT_META[stub.id] : undefined;
       const project: Project | undefined =
         stub && meta ? { id: stub.id, module: mod.id, ...meta } : undefined;
       return {
         ...mod,
-        hours: override?.hours ?? mod.hours,
+        hours: MODULE_HOURS[mod.id] ?? override?.hours ?? mod.hours,
         lessons,
         project,
       };

@@ -94,4 +94,4 @@ position = prediction * leverage  # prediction 越大，仓位越大
 > ML 在量化交易中不是「银弹」——它是一把锋利的刀，用好了可以切出传统方法看不到的 Alpha，用不好会切到自己。关键不是模型有多复杂，而是你对金融数据的理解有多深。
 :::
 
-::quiz{id="q_m11b"}
+::quiz{id="q_m11d"}

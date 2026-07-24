@@ -28,6 +28,19 @@ describe("learn-course-fix-p0 · P0-1 便利收益方向（m1l4）", () => {
   });
 });
 
+describe("learn-course-fix-p0 · Bid-Ask Bounce 口径（m2l5）", () => {
+  it("不再声称中间价回测制造 Bounce 虚假利润", () => {
+    expect(SOURCE).not.toContain(
+      "用中间价回测时，价格在 Bid 和 Ask 之间来回跳跃模拟出并不存在的利润",
+    );
+  });
+
+  it("明确成交价 Bounce 与 Mid 低估成本", () => {
+    expect(SOURCE).toContain("成交价（Last Trade）");
+    expect(SOURCE).toMatch(/低估.*价差成本|低估真实.*成本/);
+  });
+});
+
 describe("learn-course-fix-p0 · P0-2 DonchianBreakoutStrategy 通道排除当前 bar（m12l2）", () => {
   it("唐奇安通道不使用含当前 bar 的切片", () => {
     // 旧（错误）：self.am.high[-self.breakout_period:].max()

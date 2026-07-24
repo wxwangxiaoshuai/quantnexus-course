@@ -50,6 +50,29 @@ describe("curriculum structure", () => {
     expect(m13.hours).toBeGreaterThanOrEqual(2);
   });
 
+  it("lesson objectives are concrete (not title templates)", () => {
+    for (const m of curriculum.modules) {
+      for (const l of m.lessons) {
+        expect(l.objectives.length).toBeGreaterThanOrEqual(2);
+        for (const o of l.objectives) {
+          expect(o).not.toMatch(/^掌握「.+」的核心概念$/);
+        }
+      }
+    }
+  });
+
+  it("quizIds are unique across lessons", () => {
+    const seen = new Map<string, string>();
+    for (const m of curriculum.modules) {
+      for (const l of m.lessons) {
+        if (!l.quizId) continue;
+        const prev = seen.get(l.quizId);
+        expect(prev, `quiz ${l.quizId} reused by ${prev} and ${l.id}`).toBeUndefined();
+        seen.set(l.quizId, l.id);
+      }
+    }
+  });
+
   it("p11 related lessons include lookAhead home L11-04 and L06-02", () => {
     const p11 = curriculum.modules.find((m) => m.id === 11)!.project!;
     expect(p11.relatedLessons).toContain("L11-04");

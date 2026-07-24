@@ -132,4 +132,4 @@ def tree_alpha_model(features_df, n_estimators=100):
 
 > 应对：对连续特征做分箱（binning），减少取值数量。
 
-::quiz{id="q_m11b"}
+::quiz{id="q_m11c"}

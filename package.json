@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "中文量化交易课程 · 14 模块 56 课节 · 从期货基础到生产级策略",
+  "description": "中文量化交易课程 · 14 模块 68 课节 · 从期货基础到生产形态策略流程",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

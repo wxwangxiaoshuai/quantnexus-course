@@ -578,7 +578,7 @@ export const curriculum: GeneratedCurriculum = {
         ],
         tags: ["回测——策略的单元测试","理论"],
         competency: "回测——策略的单元测试",
-        quizId: "q_m6f",
+        quizId: "q_m6g",
       }
       ],
       project: {
@@ -622,7 +622,7 @@ export const curriculum: GeneratedCurriculum = {
         legacyId: "m7l2",
         title: "止损：生存第一定律",
         summary: "为什么必须有止损：期货有杠杆，没有止损就没有损失上限。一次极端行情可以让账户归零甚至穿仓（亏损超过本金，还需要向经纪商补钱）。",
-        duration: 3,
+        duration: 12,
         type: "理论",
         objectives: [
           "掌握「止损：生存第一定律」的核心概念",
@@ -690,7 +690,7 @@ export const curriculum: GeneratedCurriculum = {
         ],
         tags: ["风险管理","理论"],
         competency: "风险管理",
-        quizId: "q_m7c",
+        quizId: "q_m7f",
       },
       {
         id: "L07-07",
@@ -705,7 +705,7 @@ export const curriculum: GeneratedCurriculum = {
         ],
         tags: ["风险管理","理论"],
         competency: "风险管理",
-        quizId: "q_m7c",
+        quizId: "q_m7g",
       }
       ],
       project: {
@@ -734,7 +734,7 @@ export const curriculum: GeneratedCurriculum = {
         legacyId: "m8l1",
         title: "四大策略范式",
         summary: "趋势跟踪（Trend Following）：市场有惯性，涨的倾向继续涨，跌的倾向继续跌。策略：突破新高买入，跌破止损卖出。代表：双均线、海龟策略。适合：单边趋势…",
-        duration: 8,
+        duration: 12,
         type: "实战",
         objectives: [
           "掌握「四大策略范式」的核心概念",
@@ -1063,7 +1063,7 @@ export const curriculum: GeneratedCurriculum = {
         ],
         tags: ["统计学习入门","理论"],
         competency: "统计学习入门",
-        quizId: "q_m11b",
+        quizId: "q_m11c",
       },
       {
         id: "L11-04",
@@ -1078,7 +1078,7 @@ export const curriculum: GeneratedCurriculum = {
         ],
         tags: ["统计学习入门","理论"],
         competency: "统计学习入门",
-        quizId: "q_m11b",
+        quizId: "q_m11d",
       }
       ],
       project: {
@@ -1319,7 +1319,7 @@ export const curriculum: GeneratedCurriculum = {
         ],
         tags: ["多因子截面策略","项目"],
         competency: "多因子截面策略",
-        quizId: "q_m14",
+        quizId: "q_m14b",
       }
       ],
       project: {

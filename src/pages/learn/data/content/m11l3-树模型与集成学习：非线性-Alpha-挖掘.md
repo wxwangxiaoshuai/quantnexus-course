@@ -7,7 +7,7 @@ moduleTitle: 第十一模块：统计学习入门
 elective: true
 order: 55
 quiz:
-  - id: q_m11b
+  - id: q_m11c
     slot: 1
 ---
 
